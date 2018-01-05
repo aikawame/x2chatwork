@@ -1,29 +1,47 @@
-from chalice import Chalice
+import json
+import os
+import re
+import requests
+from chalice import Chalice, Response
+from jinja2 import Environment, FileSystemLoader
 
 app = Chalice(app_name='x2chatwork')
 
+@app.route('/{path}', methods=['POST'])
+def index(path):
+    try:
+        config = __load_config(path)
+        template = __load_template(config)
+        requests.post(
+            'https://api.chatwork.com/v2/rooms/' + str(config['room_id']) + '/messages',
+            {'body': template.render(json=app.current_request.json_body, base_url=__get_base_url(config))},
+            headers={'X-ChatWorkToken': config['api_token']}
+        )
+        return Response(body='ok', status_code=200)
+    except Exception as e:
+        app.log.error(str(type(e)) + ':' + str(e))
+        return Response(body='error', status_code=500)
 
-@app.route('/')
-def index():
-    return {'hello': 'world'}
+def __load_config(path):
+    config_file = open(os.environ['X2_CONFIG_FILE_PATH'], 'r')
+    config = json.load(config_file)[path]
+    config_file.close()
+    return config
 
+def __load_template(config):
+    env = Environment(loader=FileSystemLoader('./chalicelib/templates/' + config['locale'], encoding='utf8'))
+    env.filters['replace'] = __replace
+    return env.get_template(config['service'] + __get_event_suffix(config) + '.j2')
 
-# The view function above will return {"hello": "world"}
-# whenever you make an HTTP GET request to '/'.
-#
-# Here are a few more examples:
-#
-# @app.route('/hello/{name}')
-# def hello_name(name):
-#    # '/hello/james' -> {"hello": "james"}
-#    return {'hello': name}
-#
-# @app.route('/users', methods=['POST'])
-# def create_user():
-#     # This is the JSON body the user sent in their POST request.
-#     user_as_json = app.current_request.json_body
-#     # We'll echo the json body back to the user in a 'user' key.
-#     return {'user': user_as_json}
-#
-# See the README documentation for more examples.
-#
+def __get_event_suffix(config):
+    if config['service'] == 'github':
+        return '_' + app.current_request.headers['X-GitHub-Event']
+    return ''
+
+def __get_base_url(config):
+    if config['service'] == 'backlog':
+        return config['base_url']
+    return ''
+
+def __replace(subject, pattern, replacement):
+    return re.sub(pattern, replacement, subject)

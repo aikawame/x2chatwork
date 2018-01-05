@@ -1,0 +1,4 @@
+{{ json.text | replace('New lines on <(.*?)\|(.*?)>', '(coffee)書き込み on \\2\n\\1') }}
+{%- for attachment in json.attachments %}
+[info][title]{{ attachment.title }}[/title]{{ attachment.text }}[/info]
+{%- endfor %}

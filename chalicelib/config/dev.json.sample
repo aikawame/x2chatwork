@@ -1,0 +1,27 @@
+{
+  "backlog": {
+    "service": "backlog",
+    "locale": "ja",
+    "api_token": "sample_token",
+    "room_id": 12345678,
+    "base_url": "http://exapmle.com/"
+  },
+  "common": {
+    "service": "common",
+    "locale": "ja",
+    "api_token": "sample_token",
+    "room_id": 12345678
+  },
+  "github": {
+    "service": "github",
+    "locale": "ja",
+    "api_token": "sample_token",
+    "room_id": 12345678
+  },
+  "scrapbox": {
+    "service": "scrapbox",
+    "locale": "ja",
+    "api_token": "sample_token",
+    "room_id": 12345678
+  }
+}

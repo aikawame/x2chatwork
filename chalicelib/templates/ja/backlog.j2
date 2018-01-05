@@ -1,0 +1,22 @@
+{%- if json.type == 1 %}
+(F)[{{ json.project.projectKey }}-{{ json.content.key_id }}]課題追加 by {{ json.createdUser.name }}
+{{ base_url }}view/{{ json.project.projectKey }}-{{ json.content.key_id }}
+[info][title]{{ json.content.summary }}[/title]{{ json.content.description }}[/info]
+{%- elif json.type == 2 %}
+(F)[{{ json.project.projectKey }}-{{ json.content.key_id }}]課題更新 by {{ json.createdUser.name }}
+{{ base_url }}view/{{ json.project.projectKey }}-{{ json.content.key_id }}
+[info][title]{{ json.content.summary }}[/title]{{ json.content.description }}[/info]
+{%- elif json.type == 3 %}
+(coffee)[{{ json.project.projectKey }}-{{ json.content.key_id }}]コメント by {{ json.createdUser.name }}
+{{ base_url }}view/{{ json.project.projectKey }}-{{ json.content.key_id }}#comment-{{ json.content.comment.id }}
+[info][title]{{ json.content.summary }}[/title]{{ json.content.comment.content }}[/info]
+{%- elif json.type == 14 %}
+(F)課題まとめて更新 by {{ json.createdUser.name }}
+{{ base_url }}projects/{{ json.project.projectKey }}
+{%- elif json.type == 5 %}
+(F)Wiki追加 by {{ json.createdUser.name }}
+{{ base_url }}alias/wiki/{{ json.content.id }}
+{%- elif json.type == 6 %}
+(F)Wiki更新 by {{ json.createdUser.name }}
+{{ base_url }}alias/wiki/{{ json.content.id }}
+{%- endif %}

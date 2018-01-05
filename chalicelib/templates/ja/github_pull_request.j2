@@ -1,0 +1,12 @@
+[{{ json.repository.name }}]
+{%- if json.action == 'opened' %}
+(F)Pull request by {{ json.sender.login }}
+{%- elif json.action == 'reopened' %}
+(F)Pull request 再開 by {{ json.sender.login }}
+{%- elif json.action == 'closed' %}
+(cracker)Pull request クローズ by {{ json.sender.login }}
+{%- else %}
+(F)Pull request 操作 by {{ json.sender.login }}
+{%- endif %}
+{{ json.pull_request.html_url }}
+[info][title]{{ json.pull_request.title }}[/title]{{ json.pull_request.body }}[/info]

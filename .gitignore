@@ -1,2 +1,8 @@
+*.pyc
+*.pyo
+.python-version
 .chalice/deployments/
 .chalice/venv/
+.chalice/deployed.json
+.chalice/policy-*.json
+chalicelib/config/*.json

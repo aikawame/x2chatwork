@@ -1,0 +1,12 @@
+[{{ json.repository.name }}]
+{%- if json.action == 'opened' %}
+(F)Issue by {{ json.sender.login }}
+{%- elif json.action == 'reopened' %}
+(F)Issue 再開 by {{ json.sender.login }}
+{%- elif json.action == 'closed' %}
+(cracker)Issue クローズ by {{ json.sender.login }}
+{%- else %}
+(F)Issue 操作 by {{ json.sender.login }}
+{%- endif %}
+{{ json.issue.html_url }}
+[info][title]{{ json.issue.title }}[/title]{{ json.issue.body }}[/info]

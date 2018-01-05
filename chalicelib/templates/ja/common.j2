@@ -1,0 +1,4 @@
+{{ json.text }}
+{%- for attachment in json.attachments %}
+[info][title]{{ attachment.title }}[/title]{{ attachment.text }}[/info]
+{%- endfor %}
