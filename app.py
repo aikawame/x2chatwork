@@ -4,17 +4,20 @@ import re
 import requests
 from chalice import Chalice, Response
 from jinja2 import Environment, FileSystemLoader
+from urllib.parse import parse_qs
 
 app = Chalice(app_name='x2chatwork')
 
-@app.route('/{path}', methods=['POST'])
+@app.route('/{path}', methods=['POST'], content_types=['application/x-www-form-urlencoded', 'application/json'])
 def index(path):
     try:
         config = __load_config(path)
         template = __load_template(config)
+        payloads = parse_qs(app.current_request.raw_body.decode()).get('payload')
+        payload = app.current_request.json_body if payloads is None else json.loads(payloads[0])
         requests.post(
             'https://api.chatwork.com/v2/rooms/' + str(config['room_id']) + '/messages',
-            {'body': template.render(json=app.current_request.json_body, base_url=__get_base_url(config))},
+            {'body': template.render(json=payload, base_url=__get_base_url(config))},
             headers={'X-ChatWorkToken': config['api_token']}
         )
         return Response(body='ok', status_code=200)
