@@ -11,5 +11,5 @@
 (F)Pull request 編集 by {{ json.sender.login }}
 {%- endif %}
 {{ json.pull_request.html_url }}
-[info][title]{{ json.pull_request.title }}[/title]{{ json.pull_request.body }}[/info]
+[info][title]{{ json.pull_request.title }}[/title]{{ json.pull_request.body[:200] }}{% if json.pull_request.body | length > 200 %}...{% endif %}[/info]
 {%- endif %}

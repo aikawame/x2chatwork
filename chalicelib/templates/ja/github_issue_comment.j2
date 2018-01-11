@@ -1,4 +1,4 @@
 [{{ json.repository.name }}]
 (coffee)コメント by {{ json.sender.login }}
 {{ json.comment.html_url }}
-[info][title]{{ json.issue.title }}[/title]{{ json.comment.body }}[/info]
+[info][title]{{ json.issue.title }}[/title]{{ json.comment.body[:200] }}{% if json.comment.body | length > 200 %}...{% endif %}[/info]
